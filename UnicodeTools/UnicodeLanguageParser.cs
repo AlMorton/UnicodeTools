@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnicodeTools.Interfaces;
 
@@ -7,40 +8,39 @@ namespace UnicodeTools
     public class UnicodeLanguageParser : IUnicodeLanguageParser
     {
         private UnicodeRange _unicodeRange;
+        private string _textToParse;
+        private StringBuilder _stringBuilder;
         public UnicodeLanguageParser(UnicodeRange unicodeRange)
         {
             _unicodeRange = unicodeRange;
         }
 
-        public string UnicodeCharactersToString(string text)
-        {
-            var sb = new StringBuilder();
-            foreach (char c in text)
-            {
-                var parsedC = GetUnicodeCharacter(c);
-                if (parsedC != '\0')
-                {
-                    sb.Append(parsedC);
-                }
-            }
-
-            return sb.ToString();
-        }
-
-        public List<char> FindUnicodeCharacters(string text)
-        {
-            var characters = new List<char>();
-            foreach (char c in text)
-            {
-                var parsedC = GetUnicodeCharacter(c);
-                if (parsedC != '\0')
-                {
-                    characters.Add(parsedC);
-                }
-            }
-
+        public List<char> CreateUnicodeCharactersList(string text)
+        {            
+            var parseText = CreateUnicodeCharactersString(text);
+            var characters = text.ToList();
             return characters;
         }
+        public string CreateUnicodeCharactersString(string text)
+        {
+            _textToParse = text;
+            _stringBuilder = new StringBuilder();
+            ParseText();
+
+            return _stringBuilder.ToString();
+        }
+
+        private void ParseText()
+        {
+            foreach (char character in _textToParse)
+            {
+                var parsedC = GetUnicodeCharacter(character);
+                if (parsedC != '\0')
+                {
+                    _stringBuilder.Append(parsedC);
+                }
+            }
+        }       
 
         public char GetUnicodeCharacter(char character)
         {

@@ -6,8 +6,8 @@ namespace UnicodeTools.Interfaces
 {
     public interface IUnicodeLanguageParser
     {
-        string UnicodeCharactersToString(string text);
-        List<char> FindUnicodeCharacters(string text);
+        string CreateUnicodeCharactersString(string text);
+        List<char> CreateUnicodeCharactersList(string text);
         char GetUnicodeCharacter(char character);
     }
 }
